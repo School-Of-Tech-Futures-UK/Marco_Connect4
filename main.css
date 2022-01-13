@@ -1,0 +1,31 @@
+
+
+.mydiv{
+    border: 0.5px solid black; 
+    text-align: center;
+}
+
+.jiaqirounded{
+    border-radius: 25px
+}
+
+#resetButton{
+    text-align: center;
+    color: rgb(255, 89, 29);
+}
+
+
+#connect4Board{
+    background-color: cornflowerblue;
+}
+
+
+
+
+
+
+
+
+
+
+
