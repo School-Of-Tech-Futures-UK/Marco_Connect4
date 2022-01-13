@@ -106,21 +106,56 @@ function resetGame(){
 
 function detectWinner(grid){
 
-    checkRows(grid);
-    checkCols(grid);
-    checkForwardDiag(grid);
-    checkBackwardDiag(grid);
+    if(checkRows(grid) != null){
+        return checkRows(grid)
+    }
 
-    return null;
-
-
-
-    let rowCount
-    let colCount
-        
+    if(checkCols(grid) != null){
+        return checkCols(grid)
+    }
+    
+    if(checkForwardDiag(grid) != null){
+        return checkForwardDiag(grid)
+    }
+    
+    if(checkBackwardDiag(grid) != null){
+        return checkBackwardDiag(grid)
+    }
     
 
-    //check columns
+    return null;
+        
+
+}
+
+function checkRows(grid){
+     
+    let rowCount
+
+    for(let i = 0; i <= (grid.length - 1); i++){
+        rowCount=0;
+
+        for(let j = 0; j <= (grid[i].length -1); j++){
+                        
+            if(grid[i][j] === grid[i][j+1] && grid[i][j] != null){
+                rowCount++;
+
+                if(rowCount >= 3){
+                    return grid[i][j]
+                    
+                }
+            }
+            
+        }
+        
+    }
+
+    return null;
+}
+
+function checkCols(grid){
+
+    let colCount
     //for(k = 0; k < (grid[k].length - 1); k++){
     for(let k in grid[0]){
         colCount = 0;
@@ -136,14 +171,13 @@ function detectWinner(grid){
         }
         
     }
-    
-    /*
 
+    return null;
     
-    
-    */
+}
 
-   //check forward diagonals
+function checkForwardDiag(grid){
+
     for(let fn = 3; fn <= 5; fn++){
         for(let fm = 0; fm <= 3; fm++){
 
@@ -155,7 +189,11 @@ function detectWinner(grid){
         } 
     }
 
-    //check backward diagonals
+    return null;
+}
+
+function checkBackwardDiag(grid){
+
     for(let bn = 3; bn <= 5; bn++){
         for(let bm = 3; bm <= 6; bm++){
 
@@ -167,8 +205,6 @@ function detectWinner(grid){
         }
     }
 
+    return null;
 
-    return null
 }
-
-//function 
