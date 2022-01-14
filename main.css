@@ -1,4 +1,7 @@
-
+#headerTitle{
+    text-align: center;
+    justify-content: center;
+}
 
 .mydiv{
     border: 0.5px solid black; 
@@ -12,20 +15,53 @@
 #resetButton{
     text-align: center;
     color: rgb(255, 89, 29);
+    background-color: rgb(240, 236, 236);
+    justify-content: center;
 }
 
 
 #connect4Board{
-    background-color: cornflowerblue;
+    background-color: darkblue;
+    align-items: center;
+    margin:auto;
+    justify-content: center;
+    text-align: center;
+    width: 750px;
+    height: 605px;
+    
+}
+
+.col{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid darkblue;
+    border-radius: 100%;
+    background-color: blue;
+    width: 100px;
+}
+
+.row{
+    
+    text-align: center;
+    justify-content: center;
+    margin: auto;
+    border-radius: 30px;
+    height: 100px;
+    width: 700px;
 }
 
 
+.resetButtonPlace{
+    text-align: center;
+    justify-content: center;
+}
 
 
-
-
-
-
+.bodyText{
+    text-align: center;
+    justify-content: center;
+}
 
 
 
