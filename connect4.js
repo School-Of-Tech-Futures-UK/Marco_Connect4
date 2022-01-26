@@ -1,10 +1,8 @@
 
-document.getElementById('headerTitle').innerText = 'Connect 4'
 let turn = 0
 let player1 = 'red'
-let redTotalScore = 0
-let yellowTotalScore = 0
-let gamesPlayed = 0
+// eslint-disable-next-line no-unused-vars
+const gamesPlayed = 0
 let redPlayerName
 let yellowPlayerName
 
@@ -17,6 +15,8 @@ let grid = [
   [null, null, null, null, null, null, null]
 ]
 
+// fetchScoresFromServer()
+
 // eslint-disable-next-line no-unused-vars
 function saveNames (e) {
   redPlayerName = document.getElementById('redName').value
@@ -25,11 +25,9 @@ function saveNames (e) {
   document.getElementById('playerTurn').innerText = `${redPlayerName}'turn`
   resetGame()
 }
-  
-fetchScoresFromServer()
 
-document.getElementById('playerTurn').innerText = `Player turn is: ${redPlayerName}`
-document.getElementById('playerTurn').style.backgroundColor = 'red'
+// fetchScoresFromServer()
+// setFirstPlayer()
 
 // eslint-disable-next-line no-unused-vars
 function takeTurn (e) {
@@ -40,12 +38,10 @@ function takeTurn (e) {
   const winner = detectWinner(grid)
   checkFull(grid)
   fetchScoresFromServer()
-  // document.getElementById('redScore').innerText = `Red total score is: ${redTotalScore}`
-  // document.getElementById('yellowScore').innerText = `Yellow total score is: ${yellowTotalScore}`
   // document.getElementById('noOfGames').innerText = `# of games played: ${gamesPlayed}`
 
   const lowestAvailableRow = getLowestAvailableRowInColumn(colNum, grid)
-  // console.log(`Lowest available row: ${lowestAvailableRow}`)
+  console.log(`Lowest available row: ${lowestAvailableRow}`)
 
   if (winner === null) {
     if (lowestAvailableRow != null) {
@@ -54,14 +50,13 @@ function takeTurn (e) {
         grid[lowestAvailableRow][colNum] = 'red'
         document.getElementById(`row${lowestAvailableRow}-col${colNum}`).style.backgroundColor = 'red'
         player1 = 'yellow'
-        // console.log(`Player turn is ${player1}`)
         document.getElementById('playerTurn').innerText = `${yellowPlayerName}'s turn`
         document.getElementById('playerTurn').style.backgroundColor = 'yellow'
+
       } else {
         grid[lowestAvailableRow][colNum] = 'yellow'
         document.getElementById(`row${lowestAvailableRow}-col${colNum}`).style.backgroundColor = 'yellow'
         player1 = 'red'
-        // console.log(`Player turn is ${player1}`)
         document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
         document.getElementById('playerTurn').style.backgroundColor = 'red'
       }
@@ -82,8 +77,38 @@ function takeTurn (e) {
     // CHANGE SERVER TO ADD NAMES AND ASSOCIATED SCORES
     sendScoreToServer(winnerName(winner), 42 - turn)
     alert(`winner is: ${winnerName(winner)}`)
+    fetchScoresFromServer()
   }
 }
+
+// function switchTurns (currentPlayer, noOfTurns){
+
+// }
+
+// function continueGame (currentPlayer){
+//   const lowestAvailableRow = getLowestAvailableRowInColumn(colNum, grid)
+
+//   if (lowestAvailableRow != null) {
+//     turn++
+
+//     if (currentPlayer === 'red') {
+//       grid[lowestAvailableRow][colNum] = 'red'
+//       document.getElementById(`row${lowestAvailableRow}-col${colNum}`).style.backgroundColor = 'red'
+//       player1 = 'yellow'
+//       document.getElementById('playerTurn').innerText = `${yellowPlayerName}'s turn`
+//       document.getElementById('playerTurn').style.backgroundColor = 'yellow'
+
+//     } else {
+//       grid[lowestAvailableRow][colNum] = 'yellow'
+//       document.getElementById(`row${lowestAvailableRow}-col${colNum}`).style.backgroundColor = 'yellow'
+//       player1 = 'red'
+//       document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
+//       document.getElementById('playerTurn').style.backgroundColor = 'red'
+//     }
+// }
+
+// function 
+// function declareWinner
 
 function checkFull (currentGrid) {
   if (turn >= 42) {
@@ -93,14 +118,24 @@ function checkFull (currentGrid) {
 }
 
 function getLowestAvailableRowInColumn (chosenColNum, currentGrid) {
-  // if(detectWinner(currentGrid) === null){
+  // currentGrid.forEach((row, index) => {
+  //   row[chosenColNum] === null ? index : null
+  //   console.log(avRowInCol)
+    
+  // })
+  // const avRowInCol = currentGrid[chosenColNum].reduce((prevVal, currVal, index) => {
+  //   return prevVal != null ? 
+  // }, null)
+    
+  //   console.log(avRowInCol)
+  // })
+  // return avRowInCol
+  
   for (let i = 5; i >= 0; i--) {
     if (currentGrid[i][chosenColNum] === null) {
       return i
     }
   }
-  // }
-
   return null
 }
 
@@ -112,7 +147,7 @@ async function sendScoreToServer (winner, score) {
       'content-type': 'application/json'
     },
 
-    body: JSON.stringify({ winner, score })
+    body: JSON.stringify({ winner, score }, {})
   })
 
   // const data = response.json()
@@ -122,19 +157,20 @@ async function sendScoreToServer (winner, score) {
 async function fetchScoresFromServer () {
   const totalScores = await fetch('http://localhost:3000/scores')
   const totalScoresJson = await totalScores.json()
+  let scoreArray
 
-  console.log(`${redPlayerName} ${totalScoresJson.redPlayerName}`)
-//   redTotalScore = totalScoresJson.redScores
-//   console.log(`${redPlayerName} ${redTotalScore}`)
-//   document.getElementById('redScore').innerText = `${redPlayerName} total score is: ${redTotalScore}`
-  console.log(`${yellowPlayerName} ${totalScoresJson.yellowPlayerName}`)
-//   yellowTotalScore = totalScoresJson.yellowScores
-//   console.log(`${yellowPlayerName} ${yellowTotalScore}`)
-//   document.getElementById('yellowScore').innerText = `${yellowPlayerName} total score is: ${yellowTotalScore}`
-//   gamesPlayed = totalScoresJson.noOfGames
+  for (const item in totalScoresJson) {
+    console.log(`${item} ${totalScoresJson[item]}`)
+    scoreArray = []
+    scoreArray.push([item, totalScoresJson[item]])
+  }
 
-  //console.log(`# of games ${gamesPlayed}`)
-  //document.getElementById('noOfGames').innerText = `# of games played: ${gamesPlayed}`
+  // document.getElementById('scoreBoard').innerText = scoreArray
+  listTopTen(totalScoresJson)
+  //   gamesPlayed = totalScoresJson.noOfGames
+
+  // console.log(`# of games ${gamesPlayed}`)
+  // document.getElementById('noOfGames').innerText = `# of games played: ${gamesPlayed}`
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -159,19 +195,17 @@ function resetGame () {
   player1 = 'red'
 
   document.getElementById('resetButton').innerText = 'Reset Game'
-  document.getElementById('playerTurn').innerText = `Player turn is: ${redPlayerName}`
+  document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
   document.getElementById('playerTurn').style.backgroundColor = 'red'
-  fetchScoresFromServer()
 }
 
 // eslint-disable-next-line no-unused-vars
-function resetAll () {
-  resetGame()
-  sendScoreToServer('clear', 0)
-  document.getElementById('redScore').innerText = `Red total score is: ${0}`
-  document.getElementById('yellowScore').innerText = `Yellow total score is: ${0}`
-  document.getElementById('noOfGames').innerText = `# of games played: ${0}`
-}
+// function resetAll () {
+//   resetGame()
+//   sendScoreToServer('clear', 0)
+// //  resetTopTen(document.getElementsByClassName('scoresBanner'))
+// //  resetTopTen()
+// }
 
 function detectWinner (grid) {
   if (checkRows(grid) != null) {
@@ -309,8 +343,31 @@ function checkBackwardDiag (grid) {
   return null
 }
 
+function setFirstPlayer () {
+  document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
+  document.getElementById('playerTurn').style.backgroundColor = 'red'
+}
+
 function winnerName (winnerColour) {
   let winnerName
   winnerColour === 'red' ? winnerName = redPlayerName : winnerName = yellowPlayerName
   return winnerName
 }
+
+function listTopTen (obj) {
+  let i = 1
+  for (const player in obj) {
+    document.getElementById(`${i}#`).innerText = `${i}#  ${player}: ${obj[player]}`
+    i++
+  }
+}
+
+// function resetTopTen () {
+// //   scoresBanner.forEach((player) => player.innerText = '')
+//   let i = 1
+//   for (i = 0; i < 10; i++) {
+//     document.getElementById(`${i}#`).innerText = null
+//   }
+// }
+
+module.exports = { getLowestAvailableRowInColumn }
