@@ -80,36 +80,53 @@ function takeTurn (e) {
     fetchScoresFromServer()
   }
 }
+/*
 
-// function switchTurns (currentPlayer, noOfTurns){
+continueGame (colNum, grid, player1)
+function continueGame (clickedCol, gameGrid, currentPlayer){
+  const lowestAvailableRow = getLowestAvailableRowInColumn(clickedCol, gameGrid)
 
-// }
+  if (lowestAvailableRow != null) {
+    turn++
 
-// function continueGame (currentPlayer){
-//   const lowestAvailableRow = getLowestAvailableRowInColumn(colNum, grid)
+    gameGrid[lowestAvailableRow][clickedCol] = currentPlayer
+    updateUI (clickedCol, lowestAvailableRow, gameGrid, currentPlayer)
 
-//   if (lowestAvailableRow != null) {
-//     turn++
 
-//     if (currentPlayer === 'red') {
-//       grid[lowestAvailableRow][colNum] = 'red'
-//       document.getElementById(`row${lowestAvailableRow}-col${colNum}`).style.backgroundColor = 'red'
-//       player1 = 'yellow'
-//       document.getElementById('playerTurn').innerText = `${yellowPlayerName}'s turn`
-//       document.getElementById('playerTurn').style.backgroundColor = 'yellow'
+    // if (currentPlayer === 'red') {
+    //   gameGrid[lowestAvailableRow][clickedCol] = 'red'
+    //   document.getElementById(`row${lowestAvailableRow}-col${clickedCol}`).style.backgroundColor = 'red'
+    //   currentPlayer = 'yellow'
+    //   document.getElementById('playerTurn').innerText = `${yellowPlayerName}'s turn`
+    //   document.getElementById('playerTurn').style.backgroundColor = 'yellow'
 
-//     } else {
-//       grid[lowestAvailableRow][colNum] = 'yellow'
-//       document.getElementById(`row${lowestAvailableRow}-col${colNum}`).style.backgroundColor = 'yellow'
-//       player1 = 'red'
-//       document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
-//       document.getElementById('playerTurn').style.backgroundColor = 'red'
-//     }
-// }
+    // } else {
+    //   gameGrid[lowestAvailableRow][clickedCol] = 'yellow'
+    //   document.getElementById(`row${lowestAvailableRow}-col${clickedCol}`).style.backgroundColor = 'yellow'
+    //   currentPlayer = 'red'
+    //   document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
+    //   document.getElementById('playerTurn').style.backgroundColor = 'red'
+    // }
+}
+function updateUI (clickedCol, availableRow, gameGrid, currentPlayer) {
+    document.getElementById(`row${availableRow}-col${clickedCol}`).style.backgroundColor = currentPlayer
 
-// function 
-// function declareWinner
+    currentPlayer = switchRedAndYellow(currentPlayer)
 
+    document.getElementById('playerTurn').innerText = `${colorToName(currentPlayer)}'s turn`
+    document.getElementById('playerTurn').style.backgroundColor = currentPlayer
+}
+
+function colorToName (currentPlayer) {
+  return currentPlayer === 'red' ? redPlayerName : yellowPlayerName
+}
+
+function switchRedAndYellow (currentPlayer) {
+  // let switchedPlayer
+  return currentPlayer === 'red' ? 'yellow' : 'red'
+}
+function declareWinner
+*/
 function checkFull (currentGrid) {
   if (turn >= 42) {
     console.log('Draw!')
