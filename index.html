@@ -14,21 +14,14 @@
     <br>
 
 </head>
-
+<title ></title>
 <body class="bodyText">
-    <h1 id="headerTitle"> Connect 4 </h1>
+   <img id="headerTitle" src= "http://www.funpages.com/games/connect4/title.gif"> </img><br>
+    <p> </p>
 
-    <form onsubmit="return saveNames(event)";>
-        <label for="redName">Red Player Name:</label>
-        <input type="text" id="redName" name="redName" >
-        <label for="yellowName">Yellow Player Name:</label>
-        <input type="text" id="yellowName" name="yellowName" >
-        <input type="submit" value="Submit">
-      </form>
-
-        <span id="playerTurn"> </span><br>
-
-
+    <span id="playerTurn"> </span><br>
+    <p></p>
+    
     <script src="./connect4.js"> </script>
    
 
@@ -88,26 +81,41 @@
             <div class=" col" id="row5-col6" onClick="takeTurn(event);">  </div>
         </div>
     </div>
+    <p></p>
 
-    <div id="scoresBannerPlace" >
-        <span id="scoreBoard"> </span><br>
-        <span id="1#" class="scoresBanner"> </span><br>
-        <span id="2#" class="scoresBanner"> </span><br>
-        <span id="3#" class="scoresBanner"> </span><br>
-        <span id="4#" class="scoresBanner"> </span><br>
-        <span id="5#" class="scoresBanner"> </span><br>
-        <span id="6#" class="scoresBanner"> </span><br>
-        <span id="7#" class="scoresBanner"> </span><br>
-        <span id="8#" class="scoresBanner"> </span><br>
-        <span id="9#" class="scoresBanner"> </span><br>
-        <span id="10#" class="scoresBanner"> </span><br>
-        <span id="noOfGames"> </span><br>
+    <div id = "playerNamesField">
+        <form onsubmit = "return saveNames(event)" id = "playersNames">
+            <label for="redName">Red Player Name: </label><br>
+            <input type="text" id="redName" name="redName" ><br>
+            <p></p>
+            <label for="yellowName"> Yellow Player Name: </label><br>
+            <input type="text" id="yellowName" name="yellowName" ><br>
+            <p></p>
+            <input type="submit" value="Submit Players" id = "submitButton">
+        </form>
+    </div>
+
+    <div id = "scoresBannerPlace" >
+        <p></p>
+        <h1 id="scoreBoard">- TOP 10 -</h1>
+        <h6 id="1#" class="scoresBanner"> </h6>
+        <h6 id="2#" class="scoresBanner"> </h6>
+        <h6 id="3#" class="scoresBanner"> </h6>
+        <h6 id="4#" class="scoresBanner"> </h6>
+        <h6 id="5#" class="scoresBanner"> </h6>
+        <h6 id="6#" class="scoresBanner"> </h6>
+        <h6 id="7#" class="scoresBanner"> </h6>
+        <h6 id="8#" class="scoresBanner"> </h6>
+        <h6 id="9#" class="scoresBanner"> </h6>
+        <h6 id="10#" class="scoresBanner"> </h6>
     </div>
 
     <p id="resetButtonPlace">
-    <button id="resetButton" onClick="resetGame(event)"> Reset Game </button>
-    <button id="resetAll" onClick="resetAll(event)"> Reset All </button>
+        <button id="resetButton" onClick="resetGame(event)"> Reset Game </button><br><br>
+        <button id="resetAll" onClick="resetAll(event)"> Reset All </button>
     </p>
+
+    <div id="overlay"></div>
 
     
 

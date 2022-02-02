@@ -6,7 +6,6 @@ app.use(express.json())
 app.use(cors())
 
 const respObj = {
-//    noOfGames: 0
 
 }
 
@@ -16,8 +15,7 @@ function sortAndSlice (unsortedObj) {
     sortedArray.push([player, unsortedObj[player]])
   }
 
-  sortedArray.sort(function (a, b) { return b[1] - a[1] })
-  const slicedArray = sortedArray.slice(0, 10)
+  const slicedArray = sortedArray.sort(function (a, b) { return b[1] - a[1] }).slice(0, 9)
 
   const sortedObj = {}
   slicedArray.forEach(function (item) {
@@ -33,18 +31,15 @@ app.get('/scores', (req, res) => {
 
 app.post('/scores', (req, res) => {
   if (req.body.winner === 'clear') {
-    for (const member in respObj) delete respObj[member]
+    for (let member in respObj) delete respObj[member]
   }
-
   else if (req.body.winner in respObj) {
     respObj[req.body.winner] += req.body.score
-    //    respObj.noOfGames++
   }
 
   //  else if (req.body.winner !== 'clear') {
   else {
     respObj[req.body.winner] = req.body.score
-    //    respObj.noOfGames++
   }
 
   // eslint-disable-next-line prefer-const

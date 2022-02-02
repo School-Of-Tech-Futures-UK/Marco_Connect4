@@ -1,8 +1,14 @@
+/*
+FUTURE WORK:
+- TESTABLE TAKE TURN FUNCTION
+- DECLARATIVE ROW, COL, DIAG FUNCTIONS
+- GAME STATE VAR
+- BETTER UI
+*/
 
 let turn = 0
-let player1 = 'red'
-// eslint-disable-next-line no-unused-vars
-const gamesPlayed = 0
+let playerI = 'red'
+
 let redPlayerName
 let yellowPlayerName
 
@@ -15,8 +21,6 @@ let grid = [
   [null, null, null, null, null, null, null]
 ]
 
-// fetchScoresFromServer()
-
 // eslint-disable-next-line no-unused-vars
 function saveNames (e) {
   redPlayerName = document.getElementById('redName').value
@@ -24,97 +28,48 @@ function saveNames (e) {
   e.preventDefault()
   document.getElementById('playerTurn').innerText = `${redPlayerName}'turn`
   resetGame()
+  setFirstPlayer()
 }
 
-// fetchScoresFromServer()
-// setFirstPlayer()
+if (typeof module === 'undefined') {
+  fetchScoresFromServer()
+}
 
 // eslint-disable-next-line no-unused-vars
 function takeTurn (e) {
   const id = e.target.id
   const colNum = id[8]
-  // eslint-disable-next-line no-unused-vars
-  const rowNum = id[3]
+  // const rowNum = id[3]
   const winner = detectWinner(grid)
-  checkFull(grid)
   fetchScoresFromServer()
-  // document.getElementById('noOfGames').innerText = `# of games played: ${gamesPlayed}`
 
   const lowestAvailableRow = getLowestAvailableRowInColumn(colNum, grid)
-  console.log(`Lowest available row: ${lowestAvailableRow}`)
 
-  if (winner === null) {
-    if (lowestAvailableRow != null) {
-      turn++
-      if (player1 === 'red') {
-        grid[lowestAvailableRow][colNum] = 'red'
-        document.getElementById(`row${lowestAvailableRow}-col${colNum}`).style.backgroundColor = 'red'
-        player1 = 'yellow'
-        document.getElementById('playerTurn').innerText = `${yellowPlayerName}'s turn`
-        document.getElementById('playerTurn').style.backgroundColor = 'yellow'
-
-      } else {
-        grid[lowestAvailableRow][colNum] = 'yellow'
-        document.getElementById(`row${lowestAvailableRow}-col${colNum}`).style.backgroundColor = 'yellow'
-        player1 = 'red'
-        document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
-        document.getElementById('playerTurn').style.backgroundColor = 'red'
-      }
-    }
-
-    // console.log(`You clicked column ${colNum}`)
-    // console.log(`Turn number ${turn}`)
-    // console.log(grid)
+  if (detectDraw(grid) === true) {
+    declareDraw()
+    return
   }
 
-  if (winner != null) {
-    // grid[rowNum][colNum] = winner
-    console.log(`winner is: ${winnerName(winner)}`)
-    document.getElementById('playerTurn').innerText = `${winnerName(winner)} wins! in ${turn} turns`
-    document.getElementById('playerTurn').style.removeProperty('background-color')
-    document.getElementById('resetButton').innerText = 'Play Again'
-    // sendScoreToServer(winner, 42 - turn)
-    // CHANGE SERVER TO ADD NAMES AND ASSOCIATED SCORES
-    sendScoreToServer(winnerName(winner), 42 - turn)
-    alert(`winner is: ${winnerName(winner)}`)
-    fetchScoresFromServer()
-  }
-}
-/*
-
-continueGame (colNum, grid, player1)
-function continueGame (clickedCol, gameGrid, currentPlayer){
-  const lowestAvailableRow = getLowestAvailableRowInColumn(clickedCol, gameGrid)
-
-  if (lowestAvailableRow != null) {
+  if (winner === null && lowestAvailableRow != null) {
     turn++
+    grid[lowestAvailableRow][colNum] = playerI
+    updateUI(colNum, lowestAvailableRow, playerI)
+    playerI = switchRedAndYellow(playerI)
 
-    gameGrid[lowestAvailableRow][clickedCol] = currentPlayer
-    updateUI (clickedCol, lowestAvailableRow, gameGrid, currentPlayer)
-
-
-    // if (currentPlayer === 'red') {
-    //   gameGrid[lowestAvailableRow][clickedCol] = 'red'
-    //   document.getElementById(`row${lowestAvailableRow}-col${clickedCol}`).style.backgroundColor = 'red'
-    //   currentPlayer = 'yellow'
-    //   document.getElementById('playerTurn').innerText = `${yellowPlayerName}'s turn`
-    //   document.getElementById('playerTurn').style.backgroundColor = 'yellow'
-
-    // } else {
-    //   gameGrid[lowestAvailableRow][clickedCol] = 'yellow'
-    //   document.getElementById(`row${lowestAvailableRow}-col${clickedCol}`).style.backgroundColor = 'yellow'
-    //   currentPlayer = 'red'
-    //   document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
-    //   document.getElementById('playerTurn').style.backgroundColor = 'red'
-    // }
+    if (detectWinner(grid) != null) {
+      declareWinner(switchRedAndYellow(playerI), turn)
+    }
+  }
 }
-function updateUI (clickedCol, availableRow, gameGrid, currentPlayer) {
-    document.getElementById(`row${availableRow}-col${clickedCol}`).style.backgroundColor = currentPlayer
 
-    currentPlayer = switchRedAndYellow(currentPlayer)
+function updateUI (clickedCol, availableRow, currentPlayer) {
+  document.getElementById('overlay').style.display = 'none'
+  document.getElementById(`row${availableRow}-col${clickedCol}`).style.backgroundColor = currentPlayer
 
-    document.getElementById('playerTurn').innerText = `${colorToName(currentPlayer)}'s turn`
-    document.getElementById('playerTurn').style.backgroundColor = currentPlayer
+  const nextPlayer = switchRedAndYellow(currentPlayer)
+
+  document.getElementById('playerTurn').innerText = `${colorToName(nextPlayer)}'s turn`
+  document.getElementById('playerTurn').style.backgroundColor = nextPlayer
 }
 
 function colorToName (currentPlayer) {
@@ -122,38 +77,37 @@ function colorToName (currentPlayer) {
 }
 
 function switchRedAndYellow (currentPlayer) {
-  // let switchedPlayer
   return currentPlayer === 'red' ? 'yellow' : 'red'
 }
-function declareWinner
-*/
-function checkFull (currentGrid) {
-  if (turn >= 42) {
-    console.log('Draw!')
-    document.getElementById('playerTurn').innerText = 'Draw!'
-  }
+
+function declareWinner (winner, turns) {
+  console.log(`winner is: ${winnerName(winner)}`)
+  document.getElementById('playerTurn').innerText = ''
+  document.getElementById('playerTurn').style.backgroundColor = winner
+  document.getElementById('resetButton').innerText = 'Play Again'
+
+  document.getElementById('overlay').style.display = 'block'
+  document.getElementById('overlay').innerText = `${winnerName(winner)} wins in ${turns} turns!`
+
+  sendScoreToServer(winnerName(winner), 42 - turns)
+
+  fetchScoresFromServer()
+}
+
+function detectDraw (currentGrid) {
+  return !currentGrid.some(row => row.includes(null))
+}
+
+function declareDraw () {
+  console.log('Draw!')
+
+  document.getElementById('overlay').style.display = 'block'
+  document.getElementById('overlay').innerText = 'Draw'
 }
 
 function getLowestAvailableRowInColumn (chosenColNum, currentGrid) {
-  // currentGrid.forEach((row, index) => {
-  //   row[chosenColNum] === null ? index : null
-  //   console.log(avRowInCol)
-    
-  // })
-  // const avRowInCol = currentGrid[chosenColNum].reduce((prevVal, currVal, index) => {
-  //   return prevVal != null ? 
-  // }, null)
-    
-  //   console.log(avRowInCol)
-  // })
-  // return avRowInCol
-  
-  for (let i = 5; i >= 0; i--) {
-    if (currentGrid[i][chosenColNum] === null) {
-      return i
-    }
-  }
-  return null
+  const avRowInCol = currentGrid.findIndex(row => row[chosenColNum] !== null) - 1
+  return avRowInCol !== -2 ? (avRowInCol !== -1 ? avRowInCol : null) : 5
 }
 
 async function sendScoreToServer (winner, score) {
@@ -177,17 +131,11 @@ async function fetchScoresFromServer () {
   let scoreArray
 
   for (const item in totalScoresJson) {
-    console.log(`${item} ${totalScoresJson[item]}`)
     scoreArray = []
     scoreArray.push([item, totalScoresJson[item]])
   }
 
-  // document.getElementById('scoreBoard').innerText = scoreArray
   listTopTen(totalScoresJson)
-  //   gamesPlayed = totalScoresJson.noOfGames
-
-  // console.log(`# of games ${gamesPlayed}`)
-  // document.getElementById('noOfGames').innerText = `# of games played: ${gamesPlayed}`
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -203,26 +151,22 @@ function resetGame () {
     [null, null, null, null, null, null, null]
   ]
 
-  // eslint-disable-next-line prefer-const
-  for (let i of document.getElementsByClassName('col')) {
+  turn = 0
+
+  playerI = 'red'
+
+  resetUI()
+}
+
+function resetUI () {
+  for (const i of document.getElementsByClassName('col')) {
     i.style.removeProperty('background-color')
   }
-
-  turn = 0
-  player1 = 'red'
-
+  document.getElementById('overlay').style.display = 'none'
   document.getElementById('resetButton').innerText = 'Reset Game'
   document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
   document.getElementById('playerTurn').style.backgroundColor = 'red'
 }
-
-// eslint-disable-next-line no-unused-vars
-// function resetAll () {
-//   resetGame()
-//   sendScoreToServer('clear', 0)
-// //  resetTopTen(document.getElementsByClassName('scoresBanner'))
-// //  resetTopTen()
-// }
 
 function detectWinner (grid) {
   if (checkRows(grid) != null) {
@@ -269,7 +213,6 @@ function checkRows (grid) {
       }
     }
   }
-
   return null
 }
 
@@ -366,9 +309,7 @@ function setFirstPlayer () {
 }
 
 function winnerName (winnerColour) {
-  let winnerName
-  winnerColour === 'red' ? winnerName = redPlayerName : winnerName = yellowPlayerName
-  return winnerName
+  return winnerColour === 'red' ? redPlayerName : yellowPlayerName
 }
 
 function listTopTen (obj) {
@@ -379,12 +320,19 @@ function listTopTen (obj) {
   }
 }
 
-// function resetTopTen () {
-// //   scoresBanner.forEach((player) => player.innerText = '')
-//   let i = 1
-//   for (i = 0; i < 10; i++) {
-//     document.getElementById(`${i}#`).innerText = null
-//   }
-// }
+// eslint-disable-next-line no-unused-vars
+function resetAll () {
+  resetGame()
+  sendScoreToServer('clear', 0)
+  resetTopTen()
+}
 
-module.exports = { getLowestAvailableRowInColumn }
+function resetTopTen () {
+  for (let i = 1; i <= 10; i++) {
+    document.getElementById(`${i}#`).innerText = ''
+  }
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = { getLowestAvailableRowInColumn, detectWinner }
+}

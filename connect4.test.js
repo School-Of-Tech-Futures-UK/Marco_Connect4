@@ -1,6 +1,82 @@
-const { getLowestAvailableRowInColumn } = require('./connect4.js');
+const { getLowestAvailableRowInColumn, detectWinner } = require('./connect4.js')
 
-describe('When clicking a column', () => {
+describe('detectWinner function test', () => {
+  const testScenarios = [
+    // test 1: column win
+    [[
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      ['red', null, null, null, null, null, null],
+      ['red', null, null, null, null, null, null],
+      ['red', null, null, null, null, null, null],
+      ['red', null, null, null, null, null, null]
+    ],
+    'red'],
+
+    // test 2: row win
+    [[
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      ['red', 'red', 'red', 'red', null, null, null]
+    ],
+    'red'],
+
+    // test 3: fwd diag win
+    [[
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, 'yellow', null, null, null],
+      [null, null, 'yellow', 'red', null, null, null],
+      ['red', 'yellow', 'red', 'red', null, null, null],
+      ['yellow', 'red', 'red', 'red', null, null, null]
+    ],
+    'yellow'],
+
+    // test 4: bkd diag win
+    [[
+      [null, 'yellow', null, null, null, null, null],
+      [null, 'red', 'yellow', null, null, null, null],
+      [null, 'yellow', 'red', 'yellow', null, null, null],
+      [null, 'red', 'yellow', 'red', 'yellow', 'yellow', null],
+      [null, 'yellow', 'red', 'red', 'yellow', 'red', null],
+      [null, 'red', 'yellow', 'yellow', 'red', 'yellow', null]
+    ],
+    'yellow'],
+
+    // test 5: no win empty grid
+    [[
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null]
+    ],
+    null],
+
+    // test 6: no win full board
+    [[
+      ['yellow', 'yellow', 'yellow', 'red', 'yellow', 'yellow', 'yellow'],
+      ['red', 'red', 'red', 'yellow', 'red', 'red', 'red'],
+      ['yellow', 'yellow', 'yellow', 'red', 'yellow', 'yellow', 'yellow'],
+      ['red', 'red', 'red', 'yellow', 'red', 'red', 'red'],
+      ['yellow', 'yellow', 'yellow', 'red', 'yellow', 'yellow', 'yellow'],
+      ['red', 'red', 'red', 'yellow', 'red', 'red', 'red']
+    ],
+    null]
+  ]
+
+  it.each(testScenarios)('for grid %s the winner is %s', (grid, expectedOutput) => {
+    let actualOutput = detectWinner(grid)
+    expect(actualOutput).toBe(expectedOutput)
+  })
+
+})
+
+describe('getLowestAvailableRowInColumn function', () => {
   // testScenarios = [[condition, expected result],[condition, expected result],....]
   // condition in this case is what is passed as arguments to the test function:
   // {board: , column:}

@@ -3,31 +3,36 @@
     justify-content: center;
 }
 
-.mydiv{
-    border: 0.5px solid black; 
-    text-align: center;
-}
-
-.jiaqirounded{
-    border-radius: 25px
-}
-
 #resetButton{
     text-align: center;
-    color: rgb(255, 89, 29);
-    background-color: rgb(240, 236, 236);
+    color: white;
+    background-color: rgb(19, 2, 59);
+    justify-content: center;
+}
+
+#resetAll{
+    text-align: center;
+    color: rgb(255, 255, 255);
+    background-color:red;
     justify-content: center;
 }
 
 
 #connect4Board{
+    /* position: fixed; */
     background-color: darkblue;
     align-items: center;
     margin:auto;
     justify-content: center;
     text-align: center;
-    width: 750px;
-    height: 605px;
+    /* width: 750px;
+    height: 605px; */
+    /* width: 40%; */
+    height: 65%;
+    width:40%;
+    left:30%;
+    right:30%;
+    border-radius: 10px;
     
 }
 
@@ -38,29 +43,27 @@
     border: 5px solid darkblue;
     border-radius: 100%;
     background-color: blue;
-    width: 100px;
+    /* width: 100px; */
+    
 }
 
-.row{
-    
+.row{    
     text-align: center;
     justify-content: center;
     margin: auto;
     border-radius: 30px;
-    height: 100px;
-    width: 700px;
+    /* height: 100px;
+    width: 700px; */
+    /* height: 80px;
+    width: 600px; */
+    height: 16.5%;
+    width: 98%;
 }
-
-
-.resetButtonPlace{
-    text-align: center;
-    justify-content: center;
-}
-
 
 .bodyText{
     text-align: center;
     justify-content: center;
+    background-color:whitesmoke;
 }
 
 #redName{
@@ -71,4 +74,74 @@
 #yellowName{
     background-color:yellow;
     color: black;
+}
+
+#playersNames{
+    justify-content: flex-start;
+    background-color:whitesmoke;
+}
+
+#overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 20%; /* Full width (cover the whole page) */
+    height: 10%; /* Full height (cover the whole page) */
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    /* margin: auto; */
+    top: 40%;
+    left:   40%;
+    right: 40%;
+    bottom: 40%;
+ 
+    background-color: rgba(0,0,0,0.9); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+  }
+
+  #submitButton{
+    text-align: center;
+    color: rgb(255, 255, 255);
+    background-color: green;
+    justify-content: center;
+  }
+
+  #scoresBannerPlace{
+    position: fixed;
+    text-align: flex-start;
+    align-items: flex-start;
+    justify-content: flex-start;
+    color: black;
+    margin: auto;
+    background-color: skyblue;
+    top: 30%;
+    left:10%;
+    bottom: 100;
+    width: 15%;
+    border-radius: 20px;
+
+  }
+
+  #resetButtonPlace{
+    /* text-align: center;
+    justify-content: center; */
+    position: fixed;
+    text-align: flex-end;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: auto;
+    top: 80%;
+    left:76%;
+}
+
+#playerNamesField{
+    position: fixed;
+    text-align: flex-end;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: auto;
+    top: 30%;
+    left:73%;
 }
