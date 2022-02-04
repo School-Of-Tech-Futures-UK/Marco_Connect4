@@ -8,6 +8,15 @@
     color: white;
     background-color: rgb(19, 2, 59);
     justify-content: center;
+    border-radius: 3px;
+}
+
+#resetButton:hover {
+    transform: scale(1.1)
+}
+
+#resetButton:active {
+    transform: scale(0.9) 
 }
 
 #resetAll{
@@ -15,8 +24,16 @@
     color: rgb(255, 255, 255);
     background-color:red;
     justify-content: center;
+    border-radius: 3px;
 }
 
+#resetAll:hover {
+    transform: scale(1.1) 
+}
+
+#resetAll:active {
+    transform: scale(0.9) 
+}
 
 #connect4Board{
     /* position: fixed; */
@@ -32,7 +49,7 @@
     width:40%;
     left:30%;
     right:30%;
-    border-radius: 10px;
+    border-radius: 10px 10px 0px 0px;
     
 }
 
@@ -58,12 +75,22 @@
     width: 600px; */
     height: 16.5%;
     width: 98%;
+    transition: transform 250ms;
 }
+
+.col:hover{
+    transform: translateY(-5px);
+}
+
+.col:active{
+    transform: translateY(5px);
+}
+
 
 .bodyText{
     text-align: center;
     justify-content: center;
-    background-color:whitesmoke;
+    background-color: lightgray;
 }
 
 #redName{
@@ -78,37 +105,48 @@
 
 #playersNames{
     justify-content: flex-start;
-    background-color:whitesmoke;
+    background-color:lightgray;
 }
 
 #overlay {
-    position: fixed; /* Sit on top of the page content */
+    position: fixed;
     display: none; /* Hidden by default */
-    width: 20%; /* Full width (cover the whole page) */
-    height: 10%; /* Full height (cover the whole page) */
-    text-align: center;
+    width: 30%; /* Full width (cover the whole page) */
+    height: 20%; /* Full height (cover the whole page) */
+    /* text-align: center; */
     align-items: center;
     justify-content: center;
     color: white;
-    /* margin: auto; */
-    top: 40%;
-    left:   40%;
-    right: 40%;
+    margin: auto;
+    top: 50%;
+    left:   35%;
+    right: 35%;
     bottom: 40%;
- 
-    background-color: rgba(0,0,0,0.9); /* Black background with opacity */
+    /* line-height: 100px; */
+    background-color: rgba(6, 209, 114, 0.911);; /* Black background with opacity */
     z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
+    border-radius: 6px;
+    border: 1px solid black;
   }
 
-  #submitButton{
+#submitButton{
     text-align: center;
     color: rgb(255, 255, 255);
     background-color: green;
     justify-content: center;
+    border-radius: 3px;
   }
 
-  #scoresBannerPlace{
+#submitButton:hover {
+    transform: scale(1.1)
+}
+
+#submitButton:active {
+    transform: scale(0.9) 
+}
+
+#scoresBannerPlace{
     position: fixed;
     text-align: flex-start;
     align-items: flex-start;
@@ -116,11 +154,12 @@
     color: black;
     margin: auto;
     background-color: skyblue;
-    top: 30%;
+    top: 35%;
     left:10%;
-    bottom: 100;
+    bottom: 10%;
     width: 15%;
-    border-radius: 20px;
+    border-radius: 10px;
+    border: 2px solid darkblue;
 
   }
 
@@ -144,4 +183,66 @@
     margin: auto;
     top: 30%;
     left:73%;
+}
+
+#playerTurn{
+    height: 4%;
+    width: 10%;
+    /* right: 45%;
+    left:45%; */
+    line-height: 30px;
+    background-color: lightgray;
+    /* position: fixed; */
+    /* flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center; */
+    font-family: Helvetica, sans-serif;;
+    margin: auto;
+}
+
+#turnBall{
+    height: 4%;
+    width: 2%;
+    border-radius: 30px;
+    /* flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center; */
+    margin: auto;
+    /* border: 1px solid black; */
+}
+
+#rematch{
+    text-align: center;
+    top:40%;
+    /* height: 5%;*/
+    width: 25%;
+    color: white;
+    background-color: rgb(19, 2, 59);
+    justify-content: center;
+    border-radius: 5px;
+    /* margin: auto; */
+}
+
+#rematch:hover {
+    transform: scale(1.1)
+}
+
+#rematch:active {
+    transform: scale(0.9) 
+}
+
+#exitOverlay{
+    text-align: center;
+    justify-content: center;
+    border-radius: 3px;
+}
+
+#exitOverlay:hover {
+    transform: scale(1.1) 
+}
+
+#exitOverlay:active {
+    transform: scale(0.9) 
 }

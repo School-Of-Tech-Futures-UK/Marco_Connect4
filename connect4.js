@@ -23,10 +23,15 @@ let grid = [
 
 // eslint-disable-next-line no-unused-vars
 function saveNames (e) {
+  // redPlayerName = document.getElementById('redName').value === '' ? 'red' : document.getElementById('redName').value
   redPlayerName = document.getElementById('redName').value
   yellowPlayerName = document.getElementById('yellowName').value
+  // if (redPlayerName === 'undefined') redPlayerName = 'red'
+  if (yellowPlayerName === 'undefined') yellowPlayerName = 'yellow'
+
   e.preventDefault()
   document.getElementById('playerTurn').innerText = `${redPlayerName}'turn`
+  document.getElementById('turnBall').style.backgroundColor = 'red'
   resetGame()
   setFirstPlayer()
 }
@@ -69,7 +74,7 @@ function updateUI (clickedCol, availableRow, currentPlayer) {
   const nextPlayer = switchRedAndYellow(currentPlayer)
 
   document.getElementById('playerTurn').innerText = `${colorToName(nextPlayer)}'s turn`
-  document.getElementById('playerTurn').style.backgroundColor = nextPlayer
+  document.getElementById('turnBall').style.backgroundColor = nextPlayer
 }
 
 function colorToName (currentPlayer) {
@@ -83,14 +88,13 @@ function switchRedAndYellow (currentPlayer) {
 function declareWinner (winner, turns) {
   console.log(`winner is: ${winnerName(winner)}`)
   document.getElementById('playerTurn').innerText = ''
-  document.getElementById('playerTurn').style.backgroundColor = winner
-  document.getElementById('resetButton').innerText = 'Play Again'
+  document.getElementById('turnBall').style.backgroundColor = winner
+  document.getElementById('resetButton').innerText = 'Rematch'
 
   document.getElementById('overlay').style.display = 'block'
-  document.getElementById('overlay').innerText = `${winnerName(winner)} wins in ${turns} turns!`
+  document.getElementById('winnerMsg').innerText = `${winnerName(winner)} wins in ${turns} turns!`
 
   sendScoreToServer(winnerName(winner), 42 - turns)
-
   fetchScoresFromServer()
 }
 
@@ -100,9 +104,8 @@ function detectDraw (currentGrid) {
 
 function declareDraw () {
   console.log('Draw!')
-
   document.getElementById('overlay').style.display = 'block'
-  document.getElementById('overlay').innerText = 'Draw'
+  document.getElementById('winnerMsg').innerText = 'Draw'
 }
 
 function getLowestAvailableRowInColumn (chosenColNum, currentGrid) {
@@ -155,6 +158,7 @@ function resetGame () {
 
   playerI = 'red'
 
+  fetchScoresFromServer()
   resetUI()
 }
 
@@ -165,7 +169,7 @@ function resetUI () {
   document.getElementById('overlay').style.display = 'none'
   document.getElementById('resetButton').innerText = 'Reset Game'
   document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
-  document.getElementById('playerTurn').style.backgroundColor = 'red'
+  document.getElementById('turnBall').style.backgroundColor = 'red'
 }
 
 function detectWinner (grid) {
@@ -305,7 +309,7 @@ function checkBackwardDiag (grid) {
 
 function setFirstPlayer () {
   document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
-  document.getElementById('playerTurn').style.backgroundColor = 'red'
+  document.getElementById('turnBall').style.backgroundColor = 'red'
 }
 
 function winnerName (winnerColour) {
@@ -331,6 +335,11 @@ function resetTopTen () {
   for (let i = 1; i <= 10; i++) {
     document.getElementById(`${i}#`).innerText = ''
   }
+}
+
+// eslint-disable-next-line no-unused-vars
+function exitOverlay (e) {
+  document.getElementById('overlay').style.display = 'none'
 }
 
 if (typeof module !== 'undefined') {

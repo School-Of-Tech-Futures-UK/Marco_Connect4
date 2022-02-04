@@ -15,7 +15,7 @@ function sortAndSlice (unsortedObj) {
     sortedArray.push([player, unsortedObj[player]])
   }
 
-  const slicedArray = sortedArray.sort(function (a, b) { return b[1] - a[1] }).slice(0, 9)
+  const slicedArray = sortedArray.sort(function (a, b) { return b[1] - a[1] }).slice(0, 10)
 
   const sortedObj = {}
   slicedArray.forEach(function (item) {

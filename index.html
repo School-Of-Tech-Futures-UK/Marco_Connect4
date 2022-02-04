@@ -14,12 +14,14 @@
     <br>
 
 </head>
-<title ></title>
+<title >Connect 4</title>
 <body class="bodyText">
-   <img id="headerTitle" src= "http://www.funpages.com/games/connect4/title.gif"> </img><br>
+
+   <img id="headerTitle" src= "C:\Users\marco.beshay\Connect 4 Team Programming edited\Marco_Connect4/Picture2.png"> </img>
     <p> </p>
 
-    <span id="playerTurn"> </span><br>
+    <h5 id="playerTurn"> </h5>
+    <div id="turnBall"></div>
     <p></p>
     
     <script src="./connect4.js"> </script>
@@ -83,21 +85,21 @@
     </div>
     <p></p>
 
-    <div id = "playerNamesField">
+    <h6 id = "playerNamesField">
         <form onsubmit = "return saveNames(event)" id = "playersNames">
             <label for="redName">Red Player Name: </label><br>
-            <input type="text" id="redName" name="redName" ><br>
+            <input type="text" id="redName" name="redName"><br>
             <p></p>
             <label for="yellowName"> Yellow Player Name: </label><br>
             <input type="text" id="yellowName" name="yellowName" ><br>
             <p></p>
             <input type="submit" value="Submit Players" id = "submitButton">
         </form>
-    </div>
+    </h6>
 
     <div id = "scoresBannerPlace" >
         <p></p>
-        <h1 id="scoreBoard">- TOP 10 -</h1>
+        <h3 id="scoreBoard">- TOP 10 -</h3>
         <h6 id="1#" class="scoresBanner"> </h6>
         <h6 id="2#" class="scoresBanner"> </h6>
         <h6 id="3#" class="scoresBanner"> </h6>
@@ -115,7 +117,13 @@
         <button id="resetAll" onClick="resetAll(event)"> Reset All </button>
     </p>
 
-    <div id="overlay"></div>
+    <div id="overlay">
+        <p></p><br>
+        <h4 id="winnerMsg"></h4>
+        <p></p>
+        <button id="rematch" onClick="resetGame(event)"> Rematch </button>
+        <button id="exitOverlay" onClick="exitOverlay(event)"> Close </button>
+    </div>
 
     
 
