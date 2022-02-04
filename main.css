@@ -57,10 +57,12 @@
     text-align: center;
     align-items: center;
     justify-content: center;
+    color: darkblue;
     border: 5px solid darkblue;
-    border-radius: 100%;
-    background-color: blue;
-    /* width: 100px; */
+    background-color: lightblue;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
     
 }
 
@@ -187,7 +189,7 @@
 
 #playerTurn{
     height: 4%;
-    width: 10%;
+    width: 40%;
     /* right: 45%;
     left:45%; */
     line-height: 30px;

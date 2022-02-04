@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 /*
 FUTURE WORK:
 - TESTABLE TAKE TURN FUNCTION
@@ -6,11 +8,13 @@ FUTURE WORK:
 - BETTER UI
 */
 
+// all functions that have UI at the start of their name are in the uifunctions.js file
+
 let turn = 0
 let playerI = 'red'
 
-let redPlayerName
-let yellowPlayerName
+let redPlayerName = 'Red'
+let yellowPlayerName = 'Yellow'
 
 let grid = [
   [null, null, null, null, null, null, null],
@@ -21,26 +25,19 @@ let grid = [
   [null, null, null, null, null, null, null]
 ]
 
-// eslint-disable-next-line no-unused-vars
 function saveNames (e) {
-  // redPlayerName = document.getElementById('redName').value === '' ? 'red' : document.getElementById('redName').value
-  redPlayerName = document.getElementById('redName').value
-  yellowPlayerName = document.getElementById('yellowName').value
-  // if (redPlayerName === 'undefined') redPlayerName = 'red'
-  if (yellowPlayerName === 'undefined') yellowPlayerName = 'yellow'
+  redPlayerName = document.getElementById('redName').value.length === 0 ? redPlayerName : document.getElementById('redName').value
+  yellowPlayerName = document.getElementById('yellowName').value.length === 0 ? yellowPlayerName : document.getElementById('yellowName').value
 
   e.preventDefault()
-  document.getElementById('playerTurn').innerText = `${redPlayerName}'turn`
-  document.getElementById('turnBall').style.backgroundColor = 'red'
   resetGame()
-  setFirstPlayer()
+  UIsetFirstPlayer()
 }
 
 if (typeof module === 'undefined') {
   fetchScoresFromServer()
 }
 
-// eslint-disable-next-line no-unused-vars
 function takeTurn (e) {
   const id = e.target.id
   const colNum = id[8]
@@ -51,61 +48,28 @@ function takeTurn (e) {
   const lowestAvailableRow = getLowestAvailableRowInColumn(colNum, grid)
 
   if (detectDraw(grid) === true) {
-    declareDraw()
+    UIdeclareDraw()
     return
   }
 
   if (winner === null && lowestAvailableRow != null) {
     turn++
     grid[lowestAvailableRow][colNum] = playerI
-    updateUI(colNum, lowestAvailableRow, playerI)
-    playerI = switchRedAndYellow(playerI)
+    UIupdateGameState(colNum, lowestAvailableRow, playerI)
+    playerI = UIswitchRedAndYellow(playerI)
 
     if (detectWinner(grid) != null) {
-      declareWinner(switchRedAndYellow(playerI), turn)
+      UIdeclareWinner(UIswitchRedAndYellow(playerI), turn)
     }
   }
 }
 
-function updateUI (clickedCol, availableRow, currentPlayer) {
-  document.getElementById('overlay').style.display = 'none'
-  document.getElementById(`row${availableRow}-col${clickedCol}`).style.backgroundColor = currentPlayer
-
-  const nextPlayer = switchRedAndYellow(currentPlayer)
-
-  document.getElementById('playerTurn').innerText = `${colorToName(nextPlayer)}'s turn`
-  document.getElementById('turnBall').style.backgroundColor = nextPlayer
-}
-
-function colorToName (currentPlayer) {
-  return currentPlayer === 'red' ? redPlayerName : yellowPlayerName
-}
-
-function switchRedAndYellow (currentPlayer) {
-  return currentPlayer === 'red' ? 'yellow' : 'red'
-}
-
-function declareWinner (winner, turns) {
-  console.log(`winner is: ${winnerName(winner)}`)
-  document.getElementById('playerTurn').innerText = ''
-  document.getElementById('turnBall').style.backgroundColor = winner
-  document.getElementById('resetButton').innerText = 'Rematch'
-
-  document.getElementById('overlay').style.display = 'block'
-  document.getElementById('winnerMsg').innerText = `${winnerName(winner)} wins in ${turns} turns!`
-
-  sendScoreToServer(winnerName(winner), 42 - turns)
-  fetchScoresFromServer()
+function winnerName (winnerColour) {
+  return winnerColour === 'red' ? redPlayerName : yellowPlayerName
 }
 
 function detectDraw (currentGrid) {
   return !currentGrid.some(row => row.includes(null))
-}
-
-function declareDraw () {
-  console.log('Draw!')
-  document.getElementById('overlay').style.display = 'block'
-  document.getElementById('winnerMsg').innerText = 'Draw'
 }
 
 function getLowestAvailableRowInColumn (chosenColNum, currentGrid) {
@@ -114,7 +78,6 @@ function getLowestAvailableRowInColumn (chosenColNum, currentGrid) {
 }
 
 async function sendScoreToServer (winner, score) {
-  // eslint-disable-next-line no-unused-vars
   const response = await fetch('http://localhost:3000/scores', {
     method: 'POST',
     headers: {
@@ -127,7 +90,6 @@ async function sendScoreToServer (winner, score) {
   // const data = response.json()
 }
 
-// eslint-disable-next-line no-unused-vars
 async function fetchScoresFromServer () {
   const totalScores = await fetch('http://localhost:3000/scores')
   const totalScoresJson = await totalScores.json()
@@ -138,38 +100,7 @@ async function fetchScoresFromServer () {
     scoreArray.push([item, totalScoresJson[item]])
   }
 
-  listTopTen(totalScoresJson)
-}
-
-// eslint-disable-next-line no-unused-vars
-function resetGame () {
-  console.log('game is reset')
-
-  grid = [
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null]
-  ]
-
-  turn = 0
-
-  playerI = 'red'
-
-  fetchScoresFromServer()
-  resetUI()
-}
-
-function resetUI () {
-  for (const i of document.getElementsByClassName('col')) {
-    i.style.removeProperty('background-color')
-  }
-  document.getElementById('overlay').style.display = 'none'
-  document.getElementById('resetButton').innerText = 'Reset Game'
-  document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
-  document.getElementById('turnBall').style.backgroundColor = 'red'
+  UIlistTopTen(totalScoresJson)
 }
 
 function detectWinner (grid) {
@@ -195,7 +126,6 @@ function detectWinner (grid) {
 function checkRows (grid) {
   /*
     we need only to check the cells marked with x, as only them can lead to a win in the rows
-
        0  1  2  3  4  5  6
     0 [x][x][x][x][ ][ ][ ]
     1 [x][x][x][x][ ][ ][ ]
@@ -203,7 +133,6 @@ function checkRows (grid) {
     3 [x][x][x][x][ ][ ][ ]
     4 [x][x][x][x][ ][ ][ ]
     5 [x][x][x][x][ ][ ][ ]
-
     the remaining cells can never lead to winning combination in rows
     */
 
@@ -223,7 +152,6 @@ function checkRows (grid) {
 function checkCols (grid) {
   /*
     we need only to check the cells marked with x, as only them can lead to a win in the cols
-
        0  1  2  3  4  5  6
     0 [x][x][x][x][x][x][x]
     1 [x][x][x][x][x][x][x]
@@ -231,7 +159,6 @@ function checkCols (grid) {
     3 [ ][ ][ ][ ][ ][ ][ ]
     4 [ ][ ][ ][ ][ ][ ][ ]
     5 [ ][ ][ ][ ][ ][ ][ ]
-
     the remaining cells can never lead to winning combination in cols
     */
 
@@ -252,7 +179,6 @@ function checkCols (grid) {
 function checkForwardDiag (grid) {
   /*
     we need only to check the cells marked with x, as only them can lead to a win in the "/" direction from top to bottom
-
        0  1  2  3  4  5  6
     0 [ ][ ][ ][ ][ ][ ][ ]
     1 [ ][ ][ ][ ][ ][ ][ ]
@@ -260,7 +186,6 @@ function checkForwardDiag (grid) {
     3 [x][x][x][x][ ][ ][ ]
     4 [x][x][x][x][ ][ ][ ]
     5 [x][x][x][x][ ][ ][ ]
-
     the remaining cells can never lead to winning combination in the forward diag top to bottom direction
     */
 
@@ -281,7 +206,6 @@ function checkForwardDiag (grid) {
 function checkBackwardDiag (grid) {
   /*
     we need only to check the cells marked with x, as only them can lead to a win in the "\" direction from top to bottom
-
        0  1  2  3  4  5  6
     0 [ ][ ][ ][ ][ ][ ][ ]
     1 [ ][ ][ ][ ][ ][ ][ ]
@@ -289,7 +213,6 @@ function checkBackwardDiag (grid) {
     3 [ ][ ][ ][x][x][x][x]
     4 [ ][ ][ ][x][x][x][x]
     5 [ ][ ][ ][x][x][x][x]
-
     the remaining cells can never lead to winning combination in the backwards diag top to bottom direction
     */
 
@@ -307,39 +230,29 @@ function checkBackwardDiag (grid) {
   return null
 }
 
-function setFirstPlayer () {
-  document.getElementById('playerTurn').innerText = `${redPlayerName}'s turn`
-  document.getElementById('turnBall').style.backgroundColor = 'red'
+function resetGame () {
+  console.log('game is reset')
+
+  grid = [
+    [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null]
+  ]
+
+  turn = 0
+
+  playerI = 'red'
+
+  fetchScoresFromServer()
+  UIresetGameState()
 }
 
-function winnerName (winnerColour) {
-  return winnerColour === 'red' ? redPlayerName : yellowPlayerName
-}
-
-function listTopTen (obj) {
-  let i = 1
-  for (const player in obj) {
-    document.getElementById(`${i}#`).innerText = `${i}#  ${player}: ${obj[player]}`
-    i++
-  }
-}
-
-// eslint-disable-next-line no-unused-vars
 function resetAll () {
   resetGame()
-  sendScoreToServer('clear', 0)
-  resetTopTen()
-}
-
-function resetTopTen () {
-  for (let i = 1; i <= 10; i++) {
-    document.getElementById(`${i}#`).innerText = ''
-  }
-}
-
-// eslint-disable-next-line no-unused-vars
-function exitOverlay (e) {
-  document.getElementById('overlay').style.display = 'none'
+  sendScoreToServer('clear', 0).then(UIresetTopTen())
 }
 
 if (typeof module !== 'undefined') {
